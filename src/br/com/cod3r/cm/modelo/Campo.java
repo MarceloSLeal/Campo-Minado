@@ -14,14 +14,29 @@ public class Campo {
 
     private List<Campo> vizinhos = new ArrayList<>();
 
-    Campo(int linha, int coluna) {
+    public Campo(int linha, int coluna) {
         this.linha = linha;
         this.coluna = coluna;
     }
 
-    boolean adicionarVizinho(Campo vizinho) {
+    public boolean adicionarVizinho(Campo vizinho) {
+        boolean linhaDiferente = linha != vizinho.linha;
+        boolean colunaDifente = coluna != vizinho.coluna;
+        boolean diagonal = linhaDiferente && colunaDifente;
 
-        return false;
+        int deltaLinha = Math.abs(linha - vizinho.linha);
+        int deltaColuna = Math.abs(coluna - vizinho.coluna);
+        int deltaGeral = deltaColuna + deltaLinha;
+
+        if (deltaGeral == 1 && !diagonal) {
+            vizinhos.add(vizinho);
+            return  true;
+        } else if (deltaGeral == 2 && diagonal) {
+            vizinhos.add(vizinho);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
