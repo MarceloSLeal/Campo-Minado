@@ -3,6 +3,8 @@ import br.com.cod3r.cm.modelo.Campo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Predicate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CampoTeste {
@@ -129,6 +131,89 @@ public class CampoTeste {
         campo.abrir();
 
         assertTrue(campo22.isAberto() && campo11.isFechado());
+    }
+
+    @Test
+    void testeObjetivoAlcancadoDesvendado() {
+        campo.abrir();
+        assertTrue(campo.objetivoAlcancado());
+    }
+
+    @Test
+    void testeObjetivoAlcancadoProtegido() {
+        campo.alternarMarcacao();
+        campo.minar();
+        campo.abrir();
+        assertTrue(campo.objetivoAlcancado());
+    }
+
+    @Test
+    void testeMinasNaVizinhancaZero() {
+        assertEquals(0, campo.minasNaVizinhanca());
+    }
+
+    void testeMinasNaVizinhancaMaiorQueZero() {
+        Campo c1 = new Campo(2, 2);
+        c1.minar();
+
+        campo.adicionarVizinho(c1);
+
+        assertTrue(campo.minasNaVizinhanca() > 0);
+    }
+
+    @Test
+    void testeToStringX() {
+        campo.alternarMarcacao();
+        assertEquals("x", campo.toString());
+    }
+
+    @Test
+    void testeToStringAsterisco() {
+        campo.minar();
+        assertThrows(ExplosaoException.class, () -> {
+            campo.abrir();
+        });
+        assertEquals("*", campo.toString());
+    }
+
+    @Test
+    void testeToStringMinasNaVizinhanca() {
+        Campo c1 = new Campo(2, 2);
+        c1.minar();
+
+        campo.adicionarVizinho(c1);
+        campo.abrir();
+
+        assertEquals("1", campo.toString().toString());
+    }
+
+    @Test
+    void testeToStringAberto() {
+        campo.abrir();
+
+        assertEquals(" ", campo.toString());
+    }
+
+    @Test
+    void testeToStringInterrogacao() {
+        assertEquals("?", campo.toString());
+    }
+
+    @Test
+    void testeReiniciarAberto() {
+        campo.abrir();
+        campo.reiniciar();
+        assertFalse(campo.isAberto());
+    }
+
+    @Test
+    void testeGetLinha() {
+        assertEquals(3, campo.getLinha());
+    }
+
+    @Test
+    void testeGetColuna() {
+        assertEquals(3, campo.getColuna());
     }
 
 }
