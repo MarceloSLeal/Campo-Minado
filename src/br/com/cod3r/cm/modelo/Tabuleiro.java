@@ -64,9 +64,9 @@ public class Tabuleiro {
         Predicate<Campo> minado = c -> c.isMinado();
 
         do {
-            minasArmadas = campos.stream().filter(minado).count();
             int aleatorio = (int) (Math.random() * campos.size());
             campos.get(aleatorio).minar();
+            minasArmadas = campos.stream().filter(minado).count();
         } while (minasArmadas < minas);
     }
 
@@ -82,9 +82,19 @@ public class Tabuleiro {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("  ");
+        for (int i = 0; i < colunas; i++) {
+            sb.append(" ");
+            sb.append(i);
+            sb.append(" ");
+        }
+
+        sb.append("\n");
+
         int indice = 0;
         for (int i = 0; i < linhas; i++) {
-
+            sb.append(i);
+            sb.append(" ");
             for (int j = 0; j < colunas; j++) {
                 sb.append(" ");
                 sb.append(campos.get(indice));
